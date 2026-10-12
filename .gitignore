@@ -16,3 +16,93 @@ bin-release/
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
+🚫 .gitignore — NEXUS HELLO UNIVERSE
+═══════════════════════════════════════════════════════════════════════════════
+Auteur : Aissa Mohammedi (DGK)
+Projet : nexus-hello-universe
+Version : 1.0.0
+═══════════════════════════════════════════════════════════════════════════════
+───────────────────────────────────────────────────────────────────────────────
+🐍 PYTHON — BYTECODE
+───────────────────────────────────────────────────────────────────────────────
+pycache/ pycache *.py[cod] *$py.class *.pyc *.pyo *.pyd .Python
+───────────────────────────────────────────────────────────────────────────────
+🐍 PYTHON — DISTRIBUTION / PACKAGING
+───────────────────────────────────────────────────────────────────────────────
+build/ build develop-eggs/ develop-eggs dist/ dist downloads/ downloads eggs/ eggs .eggs/ .eggs lib/ lib lib64/ lib64 parts/ parts sdist/ sdist var/ var wheels/ wheels share/python-wheels/ share/python-wheels *.egg-info/ *.egg-info .installed.cfg *.egg MANIFEST pip-wheel-metadata/ pip-wheel-metadata
+───────────────────────────────────────────────────────────────────────────────
+🐍 PYTHON — ENVIRONNEMENTS VIRTUELS
+───────────────────────────────────────────────────────────────────────────────
+.venv/ .venv venv/ venv ENV/ ENV env/ env env.bak/ env.bak venv.bak/ venv.bak pythonenv/ pythonenv .python-version .python-version
+───────────────────────────────────────────────────────────────────────────────
+🐍 PYTHON — TESTS & COUVERTURE
+───────────────────────────────────────────────────────────────────────────────
+.pytest_cache/ .pytest_cache .tox/ .tox .nox/ .nox .coverage .coverage .coverage.* coverage.xml coverage.xml *.cover *.py,cover .hypothesis/ .hypothesis htmlcov/ htmlcov nosetests.xml nosetests.xml
+───────────────────────────────────────────────────────────────────────────────
+🐍 PYTHON — TYPE CHECKERS
+───────────────────────────────────────────────────────────────────────────────
+.mypy_cache/ .mypy_cache .dmypy.json dmypy.json .pyre/ .pyre .pytype/ .pytype .ruff_cache/ .ruff_cache
+───────────────────────────────────────────────────────────────────────────────
+🎨 IDE / ÉDITEURS
+───────────────────────────────────────────────────────────────────────────────
+.vscode/ .vscode .idea/ .idea *.swp *.swo *.swn *~ *.orig *.rej *.bak *.tmp .history/ .history .fleet/ .fleet *.sublime-project *.sublime-workspace .atom/ .atom .nvim/ .nvim .emacs.d/ .emacs.d .zed/ .zed
+───────────────────────────────────────────────────────────────────────────────
+🍎 MACOS
+───────────────────────────────────────────────────────────────────────────────
+.DS_Store .DS_Store? ._* .Spotlight-V100 .Trashes .fseventsd .TemporaryItems .NetworkTrash .Icon? .AppleDouble .LSOverride *.icloud
+───────────────────────────────────────────────────────────────────────────────
+🪟 WINDOWS
+───────────────────────────────────────────────────────────────────────────────
+Thumbs.db Thumbs.db:encryptable ehthumbs.db ehthumbs_vista.db Desktop.ini $RECYCLE.BIN/ *.lnk *.cab *.msi *.msix *.msm *.msp *.stackdump
+───────────────────────────────────────────────────────────────────────────────
+🐧 LINUX
+───────────────────────────────────────────────────────────────────────────────
+*~ .directory .fuse_hidden* .Trash-* .nfs*
+───────────────────────────────────────────────────────────────────────────────
+📝 LOGS
+───────────────────────────────────────────────────────────────────────────────
+logs/ logs .log .log. .log.gz npm-debug.log yarn-debug.log yarn-error.log* pnpm-debug.log*
+───────────────────────────────────────────────────────────────────────────────
+💾 BASES DE DONNÉES / ÉTAT
+───────────────────────────────────────────────────────────────────────────────
+*.db *.db-journal *.db-wal *.db-shm *.sqlite *.sqlite3 nexus_state.json nexus_cache/ nexus_data/ *.pid *.seed
+───────────────────────────────────────────────────────────────────────────────
+⚙️ CONFIGURATION LOCALE
+───────────────────────────────────────────────────────────────────────────────
+.env .env.* !.env.example config.local.json settings.local.json *.local *.local.json secrets/ credentials.json
+───────────────────────────────────────────────────────────────────────────────
+📦 DONNÉES PERSONNELLES / EXPORTS
+───────────────────────────────────────────────────────────────────────────────
+nexus_export/ exports/ backups/ *.backup *.bak restore/
+───────────────────────────────────────────────────────────────────────────────
+🔧 FICHIERS GÉNÉRÉS
+───────────────────────────────────────────────────────────────────────────────
+nexus_generated_* output_* temp/ temp tmp/ tmp
+───────────────────────────────────────────────────────────────────────────────
+🗜️ ARCHIVES
+───────────────────────────────────────────────────────────────────────────────
+*.zip *.tar *.tar.gz *.tgz *.tar.bz2 *.7z *.rar
+───────────────────────────────────────────────────────────────────────────────
+🎬 VIDÉOS / AUDIO
+───────────────────────────────────────────────────────────────────────────────
+*.mp4 *.mov *.avi *.mkv *.wav *.mp3
+───────────────────────────────────────────────────────────────────────────────
+🚀 VERCEL / NETLIFY / DÉPLOIEMENT
+───────────────────────────────────────────────────────────────────────────────
+.vercel/ .vercel .netlify/ .netlify .now/ .now
+───────────────────────────────────────────────────────────────────────────────
+🐙 GITHUB
+───────────────────────────────────────────────────────────────────────────────
+.github/.local .github/workflows/.local.yml
+───────────────────────────────────────────────────────────────────────────────
+🧬 NEXUS SPÉCIFIQUE
+───────────────────────────────────────────────────────────────────────────────
+.nexus/ nexus_agent_data/ nexus_hello_data/ nexus_secrets/
+═══════════════════════════════════════════════════════════════════════════════
+✅ FICHIERS QUI DOIVENT ÊTRE COMMIT :
+✓ nexus_hello_universe.py
+✓ README.md
+✓ .gitignore
+✓ LICENSE
+✓ .env.example (si tu en crées un)
+═══════════════════════════════════════════════════════════════════════════════
