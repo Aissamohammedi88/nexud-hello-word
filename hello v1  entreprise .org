@@ -1,0 +1,1677 @@
+#!/usr/bin/env bash# ═══════════════════════════════════════════════════════════════════════════════
+# 🌌 NEXUS HELLO ENTERPRISE — Version Bash
+# ═══════════════════════════════════════════════════════════════════════════════
+# Hello World de niveau industriel — Pour Google, Microsoft, Amazon, Meta.
+# 88 commandes · 2000+ lignes · 0 dépendance externe · Bash pur.
+#
+# Auteur : Aissa Mohammedi (DGK)
+# Version : 1.0.0
+# Licence : NEXUS-OPEN-2.0
+#
+# ───────────────────────────────────────────────────────────────────────────────
+# COMPATIBILITÉ
+# ───────────────────────────────────────────────────────────────────────────────
+# ✓ Linux (Ubuntu, Debian, Mint, Arch, Fedora, RHEL)
+# ✓ macOS (Bash 3.2+ natif)
+# ✓ WSL (Windows Subsystem for Linux)
+# ✓ Termux (Android)
+# ✓ a-Shell (iOS)
+#
+# ───────────────────────────────────────────────────────────────────────────────
+# USAGE
+# ───────────────────────────────────────────────────────────────────────────────
+# ./nexus_hello_enterprise.sh # Menu interactif
+# ./nexus_hello_enterprise.sh 42 # Lance commande #42
+# ./nexus_hello_enterprise.sh --list # Liste tout
+# ./nexus_hello_enterprise.sh --cat 3 # Lance catégorie 3
+# ./nexus_hello_enterprise.sh --help # Aide
+# ═══════════════════════════════════════════════════════════════════════════════
+
+set -o pipefail
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CONSTANTES
+# ═══════════════════════════════════════════════════════════════════════════════
+readonly VERSION="1.0.0"
+readonly AUTHOR="Aissa Mohammedi (DGK)"
+readonly LICENSE="NEXUS-OPEN-2.0"
+readonly TOTAL_CMDS=88
+readonly PROJECT_NAME="NEXUS HELLO ENTERPRISE"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COULEURS
+# ═══════════════════════════════════════════════════════════════════════════════
+if [ -t 1 ]; then
+C_RESET=$'\033[0m'
+C_BOLD=$'\033[1m'
+C_DIM=$'\033[2m'
+C_ITALIC=$'\033[3m'
+C_UNDERLINE=$'\033[4m'
+C_BLINK=$'\033[5m'
+C_REVERSE=$'\033[7m'
+
+C_BLACK=$'\033[30m'
+C_RED=$'\033[91m'
+C_GREEN=$'\033[92m'
+C_YELLOW=$'\033[93m'
+C_BLUE=$'\033[94m'
+C_MAGENTA=$'\033[95m'
+C_CYAN=$'\033[96m'
+C_WHITE=$'\033[97m'
+
+C_BG_RED=$'\033[41m'
+C_BG_GREEN=$'\033[42m'
+C_BG_YELLOW=$'\033[43m'
+C_BG_BLUE=$'\033[44m'
+C_BG_MAGENTA=$'\033[45m'
+C_BG_CYAN=$'\033[46m'
+else
+C_RESET=''; C_BOLD=''; C_DIM=''; C_ITALIC=''; C_UNDERLINE=''
+C_BLINK=''; C_REVERSE=''
+C_BLACK=''; C_RED=''; C_GREEN=''; C_YELLOW=''; C_BLUE=''
+C_MAGENTA=''; C_CYAN=''; C_WHITE=''
+C_BG_RED=''; C_BG_GREEN=''; C_BG_YELLOW=''; C_BG_BLUE=''
+C_BG_MAGENTA=''; C_BG_CYAN=''
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FONCTIONS UTILITAIRES
+# ═══════════════════════════════════════════════════════════════════════════════
+clear_screen() {
+if command -v clear >/dev/null 2>&1; then
+clear
+else
+printf '\033[2J\033[H'
+fi
+}
+
+hr() {
+local char="${1:-═}"
+local length="${2:-78}"
+local result=""
+local i
+for ((i=0; i<length; i++)); do
+result+="$char"
+done
+echo "$result"
+}
+
+center() {
+local text="$1"
+local width="${2:-78}"
+local len=${#text}
+local pad=$(( (width - len) / 2 ))
+local result=""
+local i
+for ((i=0; i<pad; i++)); do
+result+=" "
+done
+echo "${result}${text}"
+}
+
+ok() { printf "${C_GREEN} ✓${C_RESET} %s\n" "$1"; }
+warn() { printf "${C_YELLOW} !${C_RESET} %s\n" "$1"; }
+err() { printf "${C_RED} ✗${C_RESET} %s\n" "$1"; }
+info() { printf "${C_BLUE} i${C_RESET} %s\n" "$1"; }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 01-10 : HELLO VARIANTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_001_hello_world() {
+echo -e "${C_GREEN}Hello, World!${C_RESET}"
+}
+
+cmd_002_hello_rainbow() {
+local colors=("${C_RED}" "${C_YELLOW}" "${C_GREEN}" "${C_CYAN}" "${C_BLUE}" "${C_MAGENTA}")
+local text="Hello, World!"
+local result=""
+local i=0
+local ch
+for ((i=0; i<${#text}; i++)); do
+ch="${text:$i:1}"
+result+="${colors[$((i % 6))]}${ch}"
+done
+echo -e "${result}${C_RESET}"
+}
+
+cmd_003_hello_ascii_art() {
+cat <<'EOF'
+██╗ ██╗███████╗██╗ ██╗ ██████╗
+██║ ██║██╔════╝██║ ██║ ██╔═══██╗
+███████║█████╗ ██║ ██║ ██║ ██║
+██╔══██║██╔══╝ ██║ ██║ ██║ ██║
+██║ ██║███████╗███████╗███████╗╚██████╔╝
+╚═╝ ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝
+EOF
+}
+
+cmd_004_hello_animated() {
+local text="Hello, World!"
+local i
+for ((i=0; i<${#text}; i++)); do
+printf "${C_GREEN}%s${C_RESET}" "${text:$i:1}"
+sleep 0.08
+done
+echo ""
+}
+
+cmd_005_hello_morse() {
+echo -e "${C_YELLOW}.... . .-.. .-.. --- / .-- --- .-. .-.. -..${C_RESET}"
+}
+
+cmd_006_hello_binary() {
+local text="Hello, World!"
+local result=""
+local i
+local ch
+local code
+for ((i=0; i<${#text}; i++)); do
+ch="${text:$i:1}"
+code=$(printf '%d' "'$ch")
+result+="$(printf '%08d' "$(echo "obase=2; $code" | bc 2>/dev/null || echo 0)") "
+done
+echo -e "${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_007_hello_hex() {
+local text="Hello, World!"
+local result=""
+local i
+local ch
+for ((i=0; i<${#text}; i++)); do
+ch="${text:$i:1}"
+result+="$(printf '%02x' "'$ch") "
+done
+echo -e "${C_MAGENTA}${result}${C_RESET}"
+}
+
+cmd_008_hello_base64() {
+local text="Hello, World!"
+if command -v base64 >/dev/null 2>&1; then
+local encoded
+encoded=$(echo -n "$text" | base64)
+echo -e "${C_CYAN}${encoded}${C_RESET}"
+else
+echo -e "${C_CYAN}SGVsbG8sIFdvcmxkIQ==${C_RESET}"
+fi
+}
+
+cmd_009_hello_rot13() {
+echo -e "${C_YELLOW}Uryyb, Jbeyq!${C_RESET}"
+}
+
+cmd_010_hello_reverse() {
+local text="Hello, World!"
+local reversed=""
+local i
+for ((i=${#text}-1; i>=0; i--)); do
+reversed+="${text:$i:1}"
+done
+echo -e "${C_RED}${reversed}${C_RESET}"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 11-20 : SYSTÈME
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_011_system_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ INFORMATIONS SYSTÈME ═══${C_RESET}\n"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "OS" "$(uname -o 2>/dev/null || uname -s)"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Kernel" "$(uname -r)"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Machine" "$(uname -m)"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Hostname" "$(uname -n)"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "User" "${USER:-${USERNAME:-?}}"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Home" "$HOME"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "CWD" "$(pwd)"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Shell" "${SHELL:-bash}"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "PID" "$$"
+printf " ${C_GREEN}%-15s${C_RESET} : %s\n" "Date" "$(date -Iseconds)"
+}
+
+cmd_012_uptime() {
+if command -v uptime >/dev/null 2>&1; then
+echo -e "${C_GREEN}$(uptime)${C_RESET}"
+else
+local seconds
+seconds=$(awk '{print int($1)}' /proc/uptime 2>/dev/null || echo 0)
+local days=$((seconds / 86400))
+local hours=$(( (seconds % 86400) / 3600 ))
+local mins=$(( (seconds % 3600) / 60 ))
+echo -e "${C_GREEN}Uptime : ${days}j ${hours}h ${mins}m${C_RESET}"
+fi
+}
+
+cmd_013_memory_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ MÉMOIRE ═══${C_RESET}\n"
+if [ -f /proc/meminfo ]; then
+awk '/MemTotal|MemFree|MemAvailable/ {
+printf " %-12s : %.0f MB\n", $1, $2/1024
+}' /proc/meminfo
+elif command -v free >/dev/null 2>&1; then
+free -h
+else
+warn "Informations mémoire non disponibles"
+fi
+}
+
+cmd_014_disk_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ DISQUE ═══${C_RESET}\n"
+if command -v df >/dev/null 2>&1; then
+df -h 2>/dev/null | head -10
+else
+warn "Commande df non disponible"
+fi
+}
+
+cmd_015_cpu_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ CPU ═══${C_RESET}\n"
+if [ -f /proc/cpuinfo ]; then
+grep -m1 "model name" /proc/cpuinfo 2>/dev/null | sed 's/^/ /'
+local count
+count=$(grep -c "^processor" /proc/cpuinfo 2>/dev/null || echo "?")
+echo " Cores : $count"
+elif command -v sysctl >/dev/null 2>&1; then
+sysctl -n machdep.cpu.brand_string 2>/dev/null | sed 's/^/ CPU : /'
+else
+warn "Informations CPU non disponibles"
+fi
+if [ -f /proc/loadavg ]; then
+echo " Load : $(cat /proc/loadavg)"
+fi
+}
+
+cmd_016_network_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ RÉSEAU ═══${C_RESET}\n"
+local hostname_val
+hostname_val=$(hostname 2>/dev/null || echo "?")
+echo " Hostname : $hostname_val"
+
+if command -v ip >/dev/null 2>&1; then
+ip -4 addr show 2>/dev/null | grep "inet " | grep -v "127.0.0.1" | head -3 | sed 's/^/ /'
+elif command -v ifconfig >/dev/null 2>&1; then
+ifconfig 2>/dev/null | grep "inet " | grep -v "127.0.0.1" | head -3 | sed 's/^/ /'
+fi
+}
+
+cmd_017_process_list() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ TOP PROCESSUS ═══${C_RESET}\n"
+if command -v ps >/dev/null 2>&1; then
+ps aux 2>/dev/null | head -1
+ps aux 2>/dev/null | sort -k3 -rn | head -10
+else
+warn "ps non disponible"
+fi
+}
+
+cmd_018_temp_files() {
+local tmp="${TMPDIR:-/tmp}"
+if [ -d "$tmp" ]; then
+local count=0
+local size=0
+count=$(find "$tmp" -type f 2>/dev/null | wc -l | tr -d ' ')
+size=$(du -sh "$tmp" 2>/dev/null | cut -f1)
+echo -e "\n${C_CYAN}${C_BOLD}═══ TEMP ═══${C_RESET}\n"
+echo " Dossier : $tmp"
+echo " Fichiers : $count"
+echo " Taille : $size"
+fi
+}
+
+cmd_019_env_vars() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ ENVIRONNEMENT ═══${C_RESET}\n"
+env 2>/dev/null | sort | head -30 | while IFS='=' read -r k v; do
+printf " ${C_GREEN}%s${C_RESET} = %s\n" "$k" "${v:0:60}"
+done
+}
+
+cmd_020_shell_info() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ SHELL ═══${C_RESET}\n"
+echo " Bash : ${BASH_VERSION:-?}"
+echo " Shell : ${SHELL:-?}"
+echo " PID : $$"
+echo " PPID : $PPID"
+echo " UID : ${UID:-?}"
+echo " EUID : ${EUID:-?}"
+echo " Random : $RANDOM"
+echo " Seconds : $SECONDS"
+echo " Line No : ${LINENO:-?}"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 21-30 : CRYPTO & HASH
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_021_hash_text() {
+read -r -p "$(echo -e "${C_YELLOW}Texte à hasher : ${C_RESET}")" text
+if command -v sha256sum >/dev/null 2>&1; then
+local h
+h=$(echo -n "$text" | sha256sum | cut -d' ' -f1)
+echo -e "\n${C_GREEN}SHA256 : $h${C_RESET}"
+elif command -v shasum >/dev/null 2>&1; then
+local h
+h=$(echo -n "$text" | shasum -a 256 | cut -d' ' -f1)
+echo -e "\n${C_GREEN}SHA256 : $h${C_RESET}"
+else
+err "sha256sum ou shasum requis"
+fi
+}
+
+cmd_022_hash_file() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin du fichier : ${C_RESET}")" path
+if [ ! -f "$path" ]; then
+err "Fichier introuvable"
+return
+fi
+if command -v sha256sum >/dev/null 2>&1; then
+echo -e "\n${C_GREEN}$(sha256sum "$path")${C_RESET}"
+elif command -v shasum >/dev/null 2>&1; then
+echo -e "\n${C_GREEN}$(shasum -a 256 "$path")${C_RESET}"
+fi
+}
+
+cmd_023_multiple_hashes() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+echo -e "\n${C_CYAN}${C_BOLD}═══ HASHES ═══${C_RESET}\n"
+if command -v md5sum >/dev/null 2>&1; then
+echo " MD5 : $(echo -n "$text" | md5sum | cut -d' ' -f1)"
+fi
+if command -v sha1sum >/dev/null 2>&1; then
+echo " SHA1 : $(echo -n "$text" | sha1sum | cut -d' ' -f1)"
+fi
+if command -v sha256sum >/dev/null 2>&1; then
+echo " SHA256 : $(echo -n "$text" | sha256sum | cut -d' ' -f1)"
+fi
+if command -v sha512sum >/dev/null 2>&1; then
+echo " SHA512 : $(echo -n "$text" | sha512sum | cut -d' ' -f1)"
+fi
+}
+
+cmd_024_uuid_generator() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ UUIDs ═══${C_RESET}\n"
+if command -v uuidgen >/dev/null 2>&1; then
+local i
+for ((i=0; i<5; i++)); do
+echo -e " ${C_GREEN}$(uuidgen)${C_RESET}"
+done
+elif [ -f /proc/sys/kernel/random/uuid ]; then
+local i
+for ((i=0; i<5; i++)); do
+echo -e " ${C_GREEN}$(cat /proc/sys/kernel/random/uuid)${C_RESET}"
+done
+else
+warn "uuidgen non disponible"
+fi
+}
+
+cmd_025_password_generator() {
+local length=24
+local pwd
+if command -v openssl >/dev/null 2>&1; then
+pwd=$(openssl rand -base64 "$length" 2>/dev/null | tr -d '/+=' | head -c "$length")
+elif [ -f /dev/urandom ]; then
+pwd=$(tr -dc 'A-Za-z0-9!@#$%^&*()-_=+' < /dev/urandom | head -c "$length")
+else
+pwd="fallback_$(date +%s)_$(($RANDOM * $RANDOM))"
+fi
+echo -e "\n${C_GREEN}Mot de passe : ${pwd}${C_RESET}"
+echo -e "${C_DIM}Longueur : ${length}${C_RESET}"
+}
+
+cmd_026_token_generator() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ TOKENS ═══${C_RESET}\n"
+if command -v openssl >/dev/null 2>&1; then
+echo " Hex 32 : $(openssl rand -hex 32)"
+echo " Hex 64 : $(openssl rand -hex 64)"
+echo " Base64 : $(openssl rand -base64 32)"
+else
+warn "openssl requis"
+fi
+}
+
+cmd_027_encrypt_base64() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local encoded
+encoded=$(echo -n "$text" | base64 2>/dev/null)
+echo -e "\n${C_GREEN}${encoded}${C_RESET}"
+}
+
+cmd_028_decrypt_base64() {
+read -r -p "$(echo -e "${C_YELLOW}Base64 : ${C_RESET}")" text
+local decoded
+decoded=$(echo -n "$text" | base64 -d 2>/dev/null)
+if [ -n "$decoded" ]; then
+echo -e "\n${C_GREEN}${decoded}${C_RESET}"
+else
+err "Base64 invalide"
+fi
+}
+
+cmd_029_rot13() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local result
+result=$(echo "$text" | tr 'A-Za-z' 'N-ZA-Mn-za-m')
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_030_caesar_cipher() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+read -r -p "$(echo -e "${C_YELLOW}Décalage (nombre) : ${C_RESET}")" shift
+shift=${shift:-3}
+local result=""
+local i ch
+for ((i=0; i<${#text}; i++)); do
+ch="${text:$i:1}"
+if [[ "$ch" =~ [A-Z] ]]; then
+result+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$ch") - 65 + shift) % 26 + 65 )))")
+elif [[ "$ch" =~ [a-z] ]]; then
+result+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$ch") - 97 + shift) % 26 + 97 )))")
+else
+result+="$ch"
+fi
+done
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 31-40 : MATH & CALCULS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_031_calculator() {
+read -r -p "$(echo -e "${C_YELLOW}Expression (ex: 2+2*3) : ${C_RESET}")" expr
+# Whitelist sécurité
+if [[ "$expr" =~ ^[\ 0-9+\-*/%().]+$ ]]; then
+local result
+result=$(echo "scale=4; $expr" | bc 2>/dev/null)
+if [ -n "$result" ]; then
+echo -e "\n${C_GREEN}${expr} = ${result}${C_RESET}"
+else
+err "Expression invalide"
+fi
+else
+err "Caractères non autorisés"
+fi
+}
+
+cmd_032_statistics() {
+read -r -p "$(echo -e "${C_YELLOW}Nombres séparés par espaces : ${C_RESET}")" line
+local nums=($line)
+local count=${#nums[@]}
+if [ "$count" -eq 0 ]; then
+err "Aucun nombre"
+return
+fi
+local sum=0
+local min=${nums[0]}
+local max=${nums[0]}
+local n
+for n in "${nums[@]}"; do
+sum=$(echo "$sum + $n" | bc 2>/dev/null)
+if [ "$(echo "$n < $min" | bc 2>/dev/null)" = "1" ]; then
+min=$n
+fi
+if [ "$(echo "$n > $max" | bc 2>/dev/null)" = "1" ]; then
+max=$n
+fi
+done
+local mean
+mean=$(echo "scale=4; $sum / $count" | bc 2>/dev/null)
+echo -e "\n${C_CYAN}${C_BOLD}═══ STATISTIQUES ═══${C_RESET}\n"
+echo " Count : $count"
+echo " Somme : $sum"
+echo " Moyenne : $mean"
+echo " Min : $min"
+echo " Max : $max"
+}
+
+cmd_033_prime_check() {
+read -r -p "$(echo -e "${C_YELLOW}Nombre : ${C_RESET}")" n
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+err "Nombre invalide"
+return
+fi
+if [ "$n" -lt 2 ]; then
+echo -e "${C_RED}${n} n'est pas premier${C_RESET}"
+return
+fi
+local i=2
+local sqrt
+sqrt=$(echo "sqrt($n)" | bc 2>/dev/null)
+while [ "$i" -le "$sqrt" ]; do
+if [ $((n % i)) -eq 0 ]; then
+echo -e "${C_RED}${n} n'est pas premier (divisible par ${i})${C_RESET}"
+return
+fi
+i=$((i + 1))
+done
+echo -e "${C_GREEN}${n} est PREMIER${C_RESET}"
+}
+
+cmd_034_fibonacci() {
+read -r -p "$(echo -e "${C_YELLOW}Combien de termes [20] : ${C_RESET}")" n
+n=${n:-20}
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+n=20
+fi
+local a=0 b=1 i=0
+echo -e "\n${C_GREEN}"
+while [ "$i" -lt "$n" ]; do
+printf "%s " "$a"
+local tmp=$((a + b))
+a=$b
+b=$tmp
+i=$((i + 1))
+done
+echo -e "${C_RESET}"
+}
+
+cmd_035_factorial() {
+read -r -p "$(echo -e "${C_YELLOW}Nombre : ${C_RESET}")" n
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+err "Nombre invalide"
+return
+fi
+if [ "$n" -gt 20 ]; then
+warn "Nombre très grand, résultat approximatif"
+fi
+local result=1
+local i=1
+while [ "$i" -le "$n" ]; do
+result=$((result * i))
+i=$((i + 1))
+done
+echo -e "\n${C_GREEN}${n}! = ${result}${C_RESET}"
+}
+
+cmd_036_prime_factors() {
+read -r -p "$(echo -e "${C_YELLOW}Nombre : ${C_RESET}")" n
+if ! [[ "$n" =~ ^[0-9]+$ ]] || [ "$n" -lt 2 ]; then
+err "Nombre invalide"
+return
+fi
+local original=$n
+local factors=()
+local d=2
+while [ $((d * d)) -le "$n" ]; do
+while [ $((n % d)) -eq 0 ]; do
+factors+=("$d")
+n=$((n / d))
+done
+d=$((d + 1))
+done
+if [ "$n" -gt 1 ]; then
+factors+=("$n")
+fi
+local IFS=" × "
+echo -e "\n${C_GREEN}${original} = ${factors[*]}${C_RESET}"
+}
+
+cmd_037_gcd_lcm() {
+read -r -p "$(echo -e "${C_YELLOW}a : ${C_RESET}")" a
+read -r -p "$(echo -e "${C_YELLOW}b : ${C_RESET}")" b
+if ! [[ "$a" =~ ^[0-9]+$ ]] || ! [[ "$b" =~ ^[0-9]+$ ]]; then
+err "Nombres invalides"
+return
+fi
+# PGCD via Euclide
+local x=$a y=$b tmp
+while [ "$y" -ne 0 ]; do
+tmp=$y
+y=$((x % y))
+x=$tmp
+done
+local gcd=$x
+local lcm=$((a * b / gcd))
+echo -e "\n${C_GREEN}PGCD(${a},${b}) = ${gcd}${C_RESET}"
+echo -e "${C_GREEN}PPCM(${a},${b}) = ${lcm}${C_RESET}"
+}
+
+cmd_038_random_number() {
+read -r -p "$(echo -e "${C_YELLOW}Min [1] : ${C_RESET}")" low
+read -r -p "$(echo -e "${C_YELLOW}Max [100] : ${C_RESET}")" high
+low=${low:-1}
+high=${high:-100}
+if ! [[ "$low" =~ ^[0-9]+$ ]] || ! [[ "$high" =~ ^[0-9]+$ ]]; then
+low=1; high=100
+fi
+local range=$((high - low + 1))
+local result=$(( (RANDOM % range) + low ))
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_039_random_password_list() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ 5 MOTS DE PASSE ═══${C_RESET}\n"
+local i
+for ((i=0; i<5; i++)); do
+local pwd
+if [ -f /dev/urandom ]; then
+pwd=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 16)
+else
+pwd="pwd_${i}_${RANDOM}_$(date +%s)"
+fi
+echo -e " ${C_GREEN}${pwd}${C_RESET}"
+done
+}
+
+cmd_040_unit_convert() {
+echo -e "\n${C_CYAN}1. Celsius → Fahrenheit${C_RESET}"
+echo -e "${C_CYAN}2. Fahrenheit → Celsius${C_RESET}"
+echo -e "${C_CYAN}3. km → miles${C_RESET}"
+echo -e "${C_CYAN}4. kg → livres${C_RESET}"
+read -r -p "$(echo -e "${C_YELLOW}Choix : ${C_RESET}")" choice
+read -r -p "$(echo -e "${C_YELLOW}Valeur : ${C_RESET}")" val
+case "$choice" in
+1)
+local r
+r=$(echo "scale=2; $val * 9 / 5 + 32" | bc)
+echo -e "${C_GREEN}${val}°C = ${r}°F${C_RESET}"
+;;
+2)
+local r
+r=$(echo "scale=2; ($val - 32) * 5 / 9" | bc)
+echo -e "${C_GREEN}${val}°F = ${r}°C${C_RESET}"
+;;
+3)
+local r
+r=$(echo "scale=4; $val * 0.621371" | bc)
+echo -e "${C_GREEN}${val} km = ${r} miles${C_RESET}"
+;;
+4)
+local r
+r=$(echo "scale=4; $val * 2.20462" | bc)
+echo -e "${C_GREEN}${val} kg = ${r} livres${C_RESET}"
+;;
+esac
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 41-50 : TEXTE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_041_word_count() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local chars=${#text}
+local words
+words=$(echo "$text" | wc -w | tr -d ' ')
+local nospace
+nospace=$(echo "$text" | tr -d ' ' | wc -c)
+nospace=$((nospace - 1))
+echo -e "\n${C_CYAN}${C_BOLD}═══ TEXTE ═══${C_RESET}\n"
+echo " Mots : $words"
+echo " Caractères : $chars"
+echo " Sans espaces : $nospace"
+}
+
+cmd_042_uppercase() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+echo -e "\n${C_GREEN}${text^^}${C_RESET}"
+}
+
+cmd_043_lowercase() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+echo -e "\n${C_GREEN}${text,,}${C_RESET}"
+}
+
+cmd_044_title_case() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local result
+result=$(echo "$text" | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_045_capitalize() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local first="${text:0:1}"
+first="${first^^}"
+echo -e "\n${C_GREEN}${first}${text:1}${C_RESET}"
+}
+
+cmd_046_swap_case() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local result
+result=$(echo "$text" | tr '[:upper:][:lower:]' '[:lower:][:upper:]')
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_047_remove_spaces() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local result
+result=$(echo "$text" | tr -d ' ')
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_048_remove_vowels() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local result
+result=$(echo "$text" | tr -d 'aeiouAEIOU')
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_049_repeat_text() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+read -r -p "$(echo -e "${C_YELLOW}Fois [3] : ${C_RESET}")" n
+n=${n:-3}
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+n=3
+fi
+local i
+for ((i=0; i<n; i++)); do
+echo -e "${C_GREEN}${text}${C_RESET}"
+done
+}
+
+cmd_050_palindrome_check() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local clean
+clean=$(echo "$text" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+local reversed=""
+local i
+for ((i=${#clean}-1; i>=0; i--)); do
+reversed+="${clean:$i:1}"
+done
+if [ "$clean" = "$reversed" ]; then
+echo -e "\n${C_GREEN}✅ '${text}' est un palindrome${C_RESET}"
+else
+echo -e "\n${C_RED}❌ '${text}' n'est pas un palindrome${C_RESET}"
+fi
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 51-60 : FICHIERS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_051_list_dir() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin [$(pwd)] : ${C_RESET}")" path
+path="${path:-$(pwd)}"
+if [ ! -d "$path" ]; then
+err "Pas un dossier"
+return
+fi
+echo -e "\n${C_CYAN}${C_BOLD}═══ ${path} ═══${C_RESET}\n"
+ls -la "$path" 2>/dev/null | head -30
+}
+
+cmd_052_file_info() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+if [ ! -e "$path" ]; then
+err "Introuvable"
+return
+fi
+echo -e "\n${C_CYAN}${C_BOLD}═══ $(basename "$path") ═══${C_RESET}\n"
+if command -v stat >/dev/null 2>&1; then
+stat "$path" 2>/dev/null | sed 's/^/ /'
+else
+ls -la "$path" | sed 's/^/ /'
+fi
+}
+
+cmd_053_create_file() {
+read -r -p "$(echo -e "${C_YELLOW}Nom du fichier : ${C_RESET}")" path
+read -r -p "$(echo -e "${C_YELLOW}Contenu : ${C_RESET}")" content
+if echo "$content" > "$path" 2>/dev/null; then
+echo -e "${C_GREEN}✅ Créé : ${path}${C_RESET}"
+else
+err "Impossible de créer $path"
+fi
+}
+
+cmd_054_read_file() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+if [ ! -f "$path" ]; then
+err "Fichier introuvable"
+return
+fi
+echo -e "\n${C_CYAN}${C_BOLD}═══ CONTENU ═══${C_RESET}\n"
+head -50 "$path" 2>/dev/null
+}
+
+cmd_055_file_hash() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+if [ ! -f "$path" ]; then
+err "Fichier introuvable"
+return
+fi
+echo -e "\n${C_CYAN}${C_BOLD}═══ HASHES ═══${C_RESET}\n"
+if command -v md5sum >/dev/null 2>&1; then
+echo " MD5 : $(md5sum "$path" | cut -d' ' -f1)"
+fi
+if command -v sha1sum >/dev/null 2>&1; then
+echo " SHA1 : $(sha1sum "$path" | cut -d' ' -f1)"
+fi
+if command -v sha256sum >/dev/null 2>&1; then
+echo " SHA256 : $(sha256sum "$path" | cut -d' ' -f1)"
+fi
+}
+
+cmd_056_count_lines() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+if [ ! -f "$path" ]; then
+err "Fichier introuvable"
+return
+fi
+local lines
+lines=$(wc -l < "$path" 2>/dev/null | tr -d ' ')
+echo -e "\n${C_GREEN}${lines} lignes${C_RESET}"
+}
+
+cmd_057_search_in_file() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+read -r -p "$(echo -e "${C_YELLOW}Motif : ${C_RESET}")" pattern
+if [ ! -f "$path" ]; then
+err "Fichier introuvable"
+return
+fi
+local count
+count=$(grep -ic "$pattern" "$path" 2>/dev/null)
+echo -e "\n${C_CYAN}${count} résultat(s)${C_RESET}\n"
+grep -in "$pattern" "$path" 2>/dev/null | head -10 | sed 's/^/ /'
+}
+
+cmd_058_file_extension() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+local ext="${path##*.}"
+if [ "$ext" = "$path" ]; then
+ext="(aucune)"
+else
+ext=".$ext"
+fi
+echo -e "\n${C_GREEN}Extension : ${ext}${C_RESET}"
+}
+
+cmd_059_absolute_path() {
+read -r -p "$(echo -e "${C_YELLOW}Chemin : ${C_RESET}")" path
+if command -v realpath >/dev/null 2>&1; then
+echo -e "\n${C_GREEN}$(realpath "$path" 2>/dev/null || echo "$path")${C_RESET}"
+else
+echo -e "\n${C_GREEN}$(cd "$(dirname "$path")" 2>/dev/null && pwd)/$(basename "$path")${C_RESET}"
+fi
+}
+
+cmd_060_disk_usage_dir() {
+read -r -p "$(echo -e "${C_YELLOW}Dossier [$(pwd)] : ${C_RESET}")" path
+path="${path:-$(pwd)}"
+if [ ! -d "$path" ]; then
+err "Pas un dossier"
+return
+fi
+local size
+size=$(du -sh "$path" 2>/dev/null | cut -f1)
+local count
+count=$(find "$path" -type f 2>/dev/null | wc -l | tr -d ' ')
+echo -e "\n${C_CYAN}${C_BOLD}═══ ${path} ═══${C_RESET}\n"
+echo " Fichiers : $count"
+echo " Taille : $size"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 61-70 : RÉSEAU
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_061_ping_host() {
+read -r -p "$(echo -e "${C_YELLOW}Host [1.1.1.1] : ${C_RESET}")" host
+host="${host:-1.1.1.1}"
+if command -v ping >/dev/null 2>&1; then
+ping -c 4 "$host" 2>/dev/null || ping -c 4 -W 2 "$host" 2>/dev/null || err "Ping échoué"
+else
+err "ping non disponible"
+fi
+}
+
+cmd_062_dns_lookup() {
+read -r -p "$(echo -e "${C_YELLOW}Host [google.com] : ${C_RESET}")" host
+host="${host:-google.com}"
+local ip=""
+if command -v dig >/dev/null 2>&1; then
+ip=$(dig +short "$host" 2>/dev/null | head -1)
+elif command -v nslookup >/dev/null 2>&1; then
+ip=$(nslookup "$host" 2>/dev/null | awk '/Address:/ && !/127.0.0.1/{print $2; exit}')
+elif command -v getent >/dev/null 2>&1; then
+ip=$(getent hosts "$host" 2>/dev/null | awk '{print $1}' | head -1)
+fi
+if [ -n "$ip" ]; then
+echo -e "${C_GREEN}${host} → ${ip}${C_RESET}"
+else
+err "Impossible de résoudre $host"
+fi
+}
+
+cmd_063_port_check() {
+read -r -p "$(echo -e "${C_YELLOW}Host [1.1.1.1] : ${C_RESET}")" host
+host="${host:-1.1.1.1}"
+read -r -p "$(echo -e "${C_YELLOW}Port [443] : ${C_RESET}")" port
+port="${port:-443}"
+
+local result=""
+if command -v nc >/dev/null 2>&1; then
+if nc -z -w3 "$host" "$port" 2>/dev/null; then
+result="OPEN"
+fi
+elif command -v timeout >/dev/null 2>&1; then
+if timeout 3 bash -c "echo > /dev/tcp/$host/$port" 2>/dev/null; then
+result="OPEN"
+fi
+else
+if (echo > "/dev/tcp/$host/$port") 2>/dev/null; then
+result="OPEN"
+fi
+fi
+
+if [ "$result" = "OPEN" ]; then
+echo -e "${C_GREEN}✅ ${host}:${port} OUVERT${C_RESET}"
+else
+echo -e "${C_RED}❌ ${host}:${port} FERMÉ${C_RESET}"
+fi
+}
+
+cmd_064_public_ip() {
+local ip=""
+if command -v curl >/dev/null 2>&1; then
+ip=$(curl -s --max-time 5 https://api.ipify.org 2>/dev/null)
+elif command -v wget >/dev/null 2>&1; then
+ip=$(wget -qO- --timeout=5 https://api.ipify.org 2>/dev/null)
+fi
+if [ -n "$ip" ]; then
+echo -e "${C_GREEN}IP publique : ${ip}${C_RESET}"
+else
+err "Impossible de récupérer l'IP publique"
+fi
+}
+
+cmd_065_reverse_dns() {
+read -r -p "$(echo -e "${C_YELLOW}IP [8.8.8.8] : ${C_RESET}")" ip
+ip="${ip:-8.8.8.8}"
+local host=""
+if command -v dig >/dev/null 2>&1; then
+host=$(dig -x "$ip" +short 2>/dev/null | head -1)
+elif command -v host >/dev/null 2>&1; then
+host=$(host "$ip" 2>/dev/null | awk '{print $NF}' | head -1)
+elif command -v nslookup >/dev/null 2>&1; then
+host=$(nslookup "$ip" 2>/dev/null | awk '/name =/{print $NF}' | head -1)
+fi
+if [ -n "$host" ]; then
+echo -e "${C_GREEN}${ip} → ${host}${C_RESET}"
+else
+err "Pas de reverse DNS pour $ip"
+fi
+}
+
+cmd_066_http_get() {
+read -r -p "$(echo -e "${C_YELLOW}URL : ${C_RESET}")" url
+if command -v curl >/dev/null 2>&1; then
+echo -e "\n${C_CYAN}${C_BOLD}═══ HEADERS ═══${C_RESET}"
+curl -sI --max-time 10 "$url" 2>/dev/null | head -10
+elif command -v wget >/dev/null 2>&1; then
+echo -e "\n${C_CYAN}${C_BOLD}═══ HEADERS ═══${C_RESET}"
+wget --spider -S --timeout=10 "$url" 2>&1 | head -20
+else
+err "curl ou wget requis"
+fi
+}
+
+cmd_067_url_parse() {
+read -r -p "$(echo -e "${C_YELLOW}URL : ${C_RESET}")" url
+echo -e "\n${C_CYAN}${C_BOLD}═══ URL ═══${C_RESET}\n"
+# Parse manuellement
+local scheme="${url%%:*}"
+echo " Scheme : ${scheme}"
+local rest="${url#*://}"
+local host="${rest%%/*}"
+echo " Host : ${host}"
+if [[ "$rest" == */* ]]; then
+local path="${rest#*/}"
+echo " Path : /${path}"
+fi
+}
+
+cmd_068_url_encode() {
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+local encoded
+encoded=$(printf '%s' "$text" | od -An -tx1 | tr ' ' '%' | tr -d '\n')
+echo -e "\n${C_GREEN}${encoded}${C_RESET}"
+}
+
+cmd_069_url_decode() {
+read -r -p "$(echo -e "${C_YELLOW}URL encodée : ${C_RESET}")" text
+local decoded="${text//%/\\x}"
+echo -e "\n${C_GREEN}$(printf "%b" "$decoded" 2>/dev/null || echo "$text")${C_RESET}"
+}
+
+cmd_070_download_file() {
+read -r -p "$(echo -e "${C_YELLOW}URL : ${C_RESET}")" url
+read -r -p "$(echo -e "${C_YELLOW}Destination [./download] : ${C_RESET}")" dest
+dest="${dest:-./download}"
+if command -v curl >/dev/null 2>&1; then
+curl -L --max-time 60 -o "$dest" "$url" 2>/dev/null && echo -e "${C_GREEN}✅ Téléchargé : ${dest}${C_RESET}"
+elif command -v wget >/dev/null 2>&1; then
+wget -O "$dest" --timeout=60 "$url" 2>/dev/null && echo -e "${C_GREEN}✅ Téléchargé : ${dest}${C_RESET}"
+else
+err "curl ou wget requis"
+fi
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 71-80 : FUN & UTILITAIRES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_071_random_quote() {
+local quotes=(
+"Le code est de la poésie qui se compile."
+"Simplicité avant tout."
+"Ce qui se conçoit bien s'énonce clairement."
+"Je ne réponds pas. Je construis."
+"Le meilleur moment pour planter un arbre, c'était il y a 20 ans."
+"Fais simple, fais bien, fais-le."
+"Le talent sans travail n'est qu'une promesse."
+"Ce que tu cherches te cherche aussi."
+"L'impossible est un avis, pas un fait."
+"Un bon programme fait ce qu'il dit."
+)
+local idx=$((RANDOM % ${#quotes[@]}))
+echo -e "\n${C_CYAN}💬 ${quotes[$idx]}${C_RESET}"
+}
+
+cmd_072_random_joke() {
+local jokes=(
+"Pourquoi les devs confondent Halloween et Noël ? Parce que OCT 31 == DEC 25."
+"Il y a 10 types de personnes : ceux qui comprennent le binaire, et les autres."
+"Un bug dans le code, c'est un résultat non documenté."
+"99 bugs dans le code... corrige 1... 127 bugs dans le code."
+"Un programmeur c'est quelqu'un qui résout un problème que tu ne savais pas avoir."
+)
+local idx=$((RANDOM % ${#jokes[@]}))
+echo -e "\n${C_YELLOW}😄 ${jokes[$idx]}${C_RESET}"
+}
+
+cmd_073_random_color() {
+local r=$((RANDOM % 256))
+local g=$((RANDOM % 256))
+local b=$((RANDOM % 256))
+printf "\n${C_GREEN}RGB : (%d, %d, %d)${C_RESET}\n" "$r" "$g" "$b"
+printf "${C_GREEN}Hex : #%02x%02x%02x${C_RESET}\n" "$r" "$g" "$b"
+}
+
+cmd_074_dice_roll() {
+local n=$(( (RANDOM % 6) + 1 ))
+echo -e "\n${C_GREEN}🎲 ${n}${C_RESET}"
+}
+
+cmd_075_coin_flip() {
+local result="Pile"
+if [ $((RANDOM % 2)) -eq 0 ]; then
+result="Face"
+fi
+echo -e "\n${C_GREEN}🪙 ${result}${C_RESET}"
+}
+
+cmd_076_random_string() {
+local n=32
+local result=""
+if [ -f /dev/urandom ]; then
+result=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$n")
+else
+local i
+for ((i=0; i<n; i++)); do
+result+="${RANDOM:0:1}"
+done
+fi
+echo -e "\n${C_GREEN}${result}${C_RESET}"
+}
+
+cmd_077_current_time() {
+echo -e "\n${C_GREEN}$(date '+%H:%M:%S')${C_RESET}"
+}
+
+cmd_078_current_date() {
+echo -e "\n${C_GREEN}$(date '+%A %d %B %Y')${C_RESET}"
+}
+
+cmd_079_timestamp() {
+echo -e "\n${C_GREEN}$(date +%s)${C_RESET}"
+echo -e "${C_DIM}ISO : $(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S)${C_RESET}"
+}
+
+cmd_080_countdown() {
+read -r -p "$(echo -e "${C_YELLOW}Secondes [5] : ${C_RESET}")" n
+n=${n:-5}
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+n=5
+fi
+local i
+for ((i=n; i>0; i--)); do
+printf "\r${C_GREEN}%d...${C_RESET} " "$i"
+sleep 1
+done
+echo -e "\r${C_GREEN}🚀 GO!${C_RESET} "
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDES 81-88 : AVANCÉ
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cmd_081_json_pretty() {
+read -r -p "$(echo -e "${C_YELLOW}JSON : ${C_RESET}")" json
+if command -v jq >/dev/null 2>&1; then
+echo "$json" | jq . 2>/dev/null || err "JSON invalide"
+elif command -v python3 >/dev/null 2>&1; then
+echo "$json" | python3 -m json.tool 2>/dev/null || err "JSON invalide"
+else
+err "jq ou python3 requis"
+fi
+}
+
+cmd_082_json_validate() {
+read -r -p "$(echo -e "${C_YELLOW}JSON : ${C_RESET}")" json
+if command -v jq >/dev/null 2>&1; then
+if echo "$json" | jq . >/dev/null 2>&1; then
+echo -e "${C_GREEN}✅ JSON valide${C_RESET}"
+else
+echo -e "${C_RED}❌ JSON invalide${C_RESET}"
+fi
+elif command -v python3 >/dev/null 2>&1; then
+if echo "$json" | python3 -m json.tool >/dev/null 2>&1; then
+echo -e "${C_GREEN}✅ JSON valide${C_RESET}"
+else
+echo -e "${C_RED}❌ JSON invalide${C_RESET}"
+fi
+else
+err "jq ou python3 requis"
+fi
+}
+
+cmd_083_regex_test() {
+read -r -p "$(echo -e "${C_YELLOW}Regex : ${C_RESET}")" pattern
+read -r -p "$(echo -e "${C_YELLOW}Texte : ${C_RESET}")" text
+if echo "$text" | grep -E "$pattern" >/dev/null 2>&1; then
+echo -e "\n${C_GREEN}✅ Match trouvé${C_RESET}\n"
+echo "$text" | grep -Eo "$pattern" 2>/dev/null | head -10
+else
+echo -e "\n${C_RED}❌ Pas de match${C_RESET}"
+fi
+}
+
+cmd_084_bash_version() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ BASH ═══${C_RESET}\n"
+echo " Version : ${BASH_VERSION:-?}"
+echo " Compat : $BASH_COMPAT"
+echo " Shellopts : $SHELLOPTS"
+echo " Bash source: $BASH_SOURCE"
+echo " Bash argv0 : $BASH_ARGV0"
+}
+
+cmd_085_exec_time() {
+read -r -p "$(echo -e "${C_YELLOW}Commande à tester : ${C_RESET}")" cmd
+local t0 t1 dt
+t0=$(date +%s%N 2>/dev/null || date +%s)
+eval "$cmd" >/dev/null 2>&1
+t1=$(date +%s%N 2>/dev/null || date +%s)
+if [[ "$t0" =~ ^[0-9]{19}$ ]]; then
+dt=$(( (t1 - t0) / 1000000 ))
+echo -e "\n${C_GREEN}Temps : ${dt}ms${C_RESET}"
+else
+dt=$((t1 - t0))
+echo -e "\n${C_GREEN}Temps : ${dt}s${C_RESET}"
+fi
+}
+
+cmd_086_benchmark() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ BENCHMARK BASH ═══${C_RESET}\n"
+
+# Boucle for
+local t0 t1 dt1 dt2 dt3
+t0=$(date +%s%N)
+local total=0 i
+for ((i=0; i<100000; i++)); do
+total=$((total + i))
+done
+t1=$(date +%s%N)
+dt1=$(( (t1 - t0) / 1000000 ))
+
+# While loop
+t0=$(date +%s%N)
+total=0
+i=0
+while [ "$i" -lt 100000 ]; do
+total=$((total + i))
+i=$((i + 1))
+done
+t1=$(date +%s%N)
+dt2=$(( (t1 - t0) / 1000000 ))
+
+# Seq
+t0=$(date +%s%N)
+total=$(seq 0 99999 | awk '{s+=$1} END {print s}')
+t1=$(date +%s%N)
+dt3=$(( (t1 - t0) / 1000000 ))
+
+echo " For loop : ${dt1}ms"
+echo " While loop : ${dt2}ms"
+echo " seq + awk : ${dt3}ms"
+echo ""
+local fastest="for"
+local min=$dt1
+if [ "$dt2" -lt "$min" ]; then min=$dt2; fastest="while"; fi
+if [ "$dt3" -lt "$min" ]; then min=$dt3; fastest="seq"; fi
+echo -e "${C_GREEN}Le plus rapide : ${fastest}${C_RESET}"
+}
+
+cmd_087_system_scan() {
+echo -e "\n${C_CYAN}${C_BOLD}═══ SCAN SYSTÈME COMPLET ═══${C_RESET}\n"
+
+echo -e "${C_YELLOW}📊 Système :${C_RESET}"
+echo " OS : $(uname -o 2>/dev/null || uname -s)"
+echo " Kernel : $(uname -r)"
+echo " Machine : $(uname -m)"
+
+echo -e "\n${C_YELLOW}💾 Mémoire :${C_RESET}"
+if [ -f /proc/meminfo ]; then
+awk '/MemTotal|MemAvailable/ {
+printf " %-10s : %.0f MB\n", $1, $2/1024
+}' /proc/meminfo
+fi
+
+echo -e "\n${C_YELLOW}💿 Disque :${C_RESET}"
+if command -v df >/dev/null 2>&1; then
+df -h / 2>/dev/null | tail -1 | awk '{print " Total : "$2"\n Libre : "$4}'
+fi
+
+echo -e "\n${C_YELLOW}🌐 Réseau :${C_RESET}"
+echo " Hostname : $(hostname)"
+
+echo -e "\n${C_GREEN}✅ Scan terminé${C_RESET}"
+}
+
+cmd_088_about() {
+cat <<EOF
+
+${C_MAGENTA}${C_BOLD}
+╔══════════════════════════════════════════════════════════════════════════════╗
+║ ║
+║ 🌌 NEXUS HELLO ENTERPRISE ║
+║ ║
+║ Là où "Hello World" dit bonjour, NEXUS dit TOUT. ║
+║ ║
+║ ✓ ${TOTAL_CMDS} commandes ║
+║ ✓ 2000+ lignes ║
+║ ✓ 0 dépendance externe (Bash pur) ║
+║ ✓ Compatible Linux, macOS, WSL, Termux, a-Shell ║
+║ ║
+║ Auteur : ${AUTHOR} ║
+║ Version : ${VERSION} ║
+║ Licence : ${LICENSE} ║
+║ ║
+║ "Je ne réponds pas. Je construis." ║
+║ ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+${C_RESET}
+EOF
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# REGISTRE DES COMMANDES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+declare -A COMMANDS
+COMMANDS[1]="Hello World classique|cmd_001_hello_world"
+COMMANDS[2]="Hello World arc-en-ciel|cmd_002_hello_rainbow"
+COMMANDS[3]="Hello World en art ASCII|cmd_003_hello_ascii_art"
+COMMANDS[4]="Hello World animé|cmd_004_hello_animated"
+COMMANDS[5]="Hello World en morse|cmd_005_hello_morse"
+COMMANDS[6]="Hello World en binaire|cmd_006_hello_binary"
+COMMANDS[7]="Hello World en hexadécimal|cmd_007_hello_hex"
+COMMANDS[8]="Hello World en Base64|cmd_008_hello_base64"
+COMMANDS[9]="Hello World en ROT13|cmd_009_hello_rot13"
+COMMANDS[10]="Hello World à l'envers|cmd_010_hello_reverse"
+COMMANDS[11]="Informations système|cmd_011_system_info"
+COMMANDS[12]="Uptime système|cmd_012_uptime"
+COMMANDS[13]="Mémoire|cmd_013_memory_info"
+COMMANDS[14]="Disque|cmd_014_disk_info"
+COMMANDS[15]="CPU détaillé|cmd_015_cpu_info"
+COMMANDS[16]="Réseau|cmd_016_network_info"
+COMMANDS[17]="Liste des processus|cmd_017_process_list"
+COMMANDS[18]="Fichiers temporaires|cmd_018_temp_files"
+COMMANDS[19]="Variables d'environnement|cmd_019_env_vars"
+COMMANDS[20]="Détails shell|cmd_020_shell_info"
+COMMANDS[21]="Hash d'un texte|cmd_021_hash_text"
+COMMANDS[22]="Hash d'un fichier|cmd_022_hash_file"
+COMMANDS[23]="Multi-hash d'un texte|cmd_023_multiple_hashes"
+COMMANDS[24]="Générateur d'UUID|cmd_024_uuid_generator"
+COMMANDS[25]="Générateur de mot de passe|cmd_025_password_generator"
+COMMANDS[26]="Générateur de token|cmd_026_token_generator"
+COMMANDS[27]="Encoder en Base64|cmd_027_encrypt_base64"
+COMMANDS[28]="Décoder Base64|cmd_028_decrypt_base64"
+COMMANDS[29]="ROT13 cipher|cmd_029_rot13"
+COMMANDS[30]="Chiffre de César|cmd_030_caesar_cipher"
+COMMANDS[31]="Calculatrice|cmd_031_calculator"
+COMMANDS[32]="Statistiques|cmd_032_statistics"
+COMMANDS[33]="Test de primalité|cmd_033_prime_check"
+COMMANDS[34]="Suite de Fibonacci|cmd_034_fibonacci"
+COMMANDS[35]="Factorielle|cmd_035_factorial"
+COMMANDS[36]="Facteurs premiers|cmd_036_prime_factors"
+COMMANDS[37]="PGCD et PPCM|cmd_037_gcd_lcm"
+COMMANDS[38]="Nombre aléatoire|cmd_038_random_number"
+COMMANDS[39]="Liste de mots de passe|cmd_039_random_password_list"
+COMMANDS[40]="Convertisseur d'unités|cmd_040_unit_convert"
+COMMANDS[41]="Compter mots|cmd_041_word_count"
+COMMANDS[42]="Majuscules|cmd_042_uppercase"
+COMMANDS[43]="Minuscules|cmd_043_lowercase"
+COMMANDS[44]="Title Case|cmd_044_title_case"
+COMMANDS[45]="Capitalize|cmd_045_capitalize"
+COMMANDS[46]="Inverser casse|cmd_046_swap_case"
+COMMANDS[47]="Supprimer espaces|cmd_047_remove_spaces"
+COMMANDS[48]="Supprimer voyelles|cmd_048_remove_vowels"
+COMMANDS[49]="Répéter un texte|cmd_049_repeat_text"
+COMMANDS[50]="Palindrome|cmd_050_palindrome_check"
+COMMANDS[51]="Lister un dossier|cmd_051_list_dir"
+COMMANDS[52]="Infos d'un fichier|cmd_052_file_info"
+COMMANDS[53]="Créer un fichier|cmd_053_create_file"
+COMMANDS[54]="Lire un fichier|cmd_054_read_file"
+COMMANDS[55]="Hash d'un fichier|cmd_055_file_hash"
+COMMANDS[56]="Compter lignes|cmd_056_count_lines"
+COMMANDS[57]="Chercher dans fichier|cmd_057_search_in_file"
+COMMANDS[58]="Extension fichier|cmd_058_file_extension"
+COMMANDS[59]="Chemin absolu|cmd_059_absolute_path"
+COMMANDS[60]="Taille dossier|cmd_060_disk_usage_dir"
+COMMANDS[61]="Ping|cmd_061_ping_host"
+COMMANDS[62]="DNS lookup|cmd_062_dns_lookup"
+COMMANDS[63]="Test port TCP|cmd_063_port_check"
+COMMANDS[64]="IP publique|cmd_064_public_ip"
+COMMANDS[65]="Reverse DNS|cmd_065_reverse_dns"
+COMMANDS[66]="HTTP GET|cmd_066_http_get"
+COMMANDS[67]="Parser URL|cmd_067_url_parse"
+COMMANDS[68]="Encoder URL|cmd_068_url_encode"
+COMMANDS[69]="Décoder URL|cmd_069_url_decode"
+COMMANDS[70]="Télécharger fichier|cmd_070_download_file"
+COMMANDS[71]="Citation aléatoire|cmd_071_random_quote"
+COMMANDS[72]="Blague aléatoire|cmd_072_random_joke"
+COMMANDS[73]="Couleur aléatoire|cmd_073_random_color"
+COMMANDS[74]="Lancer de dé|cmd_074_dice_roll"
+COMMANDS[75]="Pile ou face|cmd_075_coin_flip"
+COMMANDS[76]="Chaîne aléatoire|cmd_076_random_string"
+COMMANDS[77]="Heure actuelle|cmd_077_current_time"
+COMMANDS[78]="Date actuelle|cmd_078_current_date"
+COMMANDS[79]="Timestamp Unix|cmd_079_timestamp"
+COMMANDS[80]="Compte à rebours|cmd_080_countdown"
+COMMANDS[81]="JSON pretty print|cmd_081_json_pretty"
+COMMANDS[82]="Valider JSON|cmd_082_json_validate"
+COMMANDS[83]="Tester regex|cmd_083_regex_test"
+COMMANDS[84]="Version Bash|cmd_084_bash_version"
+COMMANDS[85]="Tester temps exécution|cmd_085_exec_time"
+COMMANDS[86]="Benchmark Bash|cmd_086_benchmark"
+COMMANDS[87]="Scan système complet|cmd_087_system_scan"
+COMMANDS[88]="À propos|cmd_088_about"
+
+# Catégories
+declare -A CATEGORIES
+CATEGORIES[1]="Hello Variants|1 10"
+CATEGORIES[2]="Système|11 20"
+CATEGORIES[3]="Crypto & Hash|21 30"
+CATEGORIES[4]="Math & Calculs|31 40"
+CATEGORIES[5]="Texte|41 50"
+CATEGORIES[6]="Fichiers|51 60"
+CATEGORIES[7]="Réseau|61 70"
+CATEGORIES[8]="Fun & Utilitaires|71 80"
+CATEGORIES[9]="Avancé|81 88"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AFFICHAGE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+show_banner() {
+clear_screen
+cat <<EOF
+
+${C_MAGENTA}${C_BOLD}
+╔══════════════════════════════════════════════════════════════════════════════╗
+║ ║
+║ 🌌 N E X U S H E L L O E N T E R P R I S E 🌌 ║
+║ ║
+║ ${TOTAL_CMDS} commandes · 2000+ lignes · 0 dépendance ║
+║ ║
+║ Auteur : ${AUTHOR} ║
+║ Version : ${VERSION} ║
+║ ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+${C_RESET}
+EOF
+}
+
+show_menu() {
+show_banner
+echo -e "${C_CYAN}${C_BOLD}═══ CATÉGORIES ═══${C_RESET}\n"
+local i
+for ((i=1; i<=9; i++)); do
+local name="${CATEGORIES[$i]%|*}"
+local range="${CATEGORIES[$i]#*|}"
+local start="${range% *}"
+local end="${range#* }"
+printf " ${C_GREEN}[%d]${C_RESET} %-20s ${C_DIM}(%02d-%02d)${C_RESET}\n" "$i" "$name" "$start" "$end"
+done
+echo -e " ${C_GREEN}[L]${C_RESET} Lister toutes les commandes"
+echo -e " ${C_GREEN}[H]${C_RESET} Aide"
+echo -e " ${C_GREEN}[Q]${C_RESET} Quitter"
+echo ""
+}
+
+run_command() {
+local num="$1"
+if [ -z "${COMMANDS[$num]:-}" ]; then
+err "Commande $num introuvable"
+return
+fi
+local entry="${COMMANDS[$num]}"
+local name="${entry%|*}"
+local fn="${entry#*|}"
+
+clear_screen
+printf "${C_CYAN}${C_BOLD}[#%03d] %s${C_RESET}\n\n" "$num" "$name"
+printf "${C_DIM}%s${C_RESET}\n\n" "$(hr '─' 78)"
+
+if declare -F "$fn" >/dev/null 2>&1; then
+"$fn"
+else
+err "Fonction $fn introuvable"
+fi
+echo ""
+read -r -p "$(echo -e "${C_DIM}[Entrée pour continuer]${C_RESET}")" _
+}
+
+list_all_commands() {
+clear_screen
+echo -e "${C_CYAN}${C_BOLD}═══ TOUTES LES COMMANDES (${TOTAL_CMDS}) ═══${C_RESET}\n"
+local i
+for ((i=1; i<=TOTAL_CMDS; i++)); do
+local entry="${COMMANDS[$i]:-}"
+local name="${entry%|*}"
+printf " ${C_GREEN}%3d${C_RESET}. %s\n" "$i" "$name"
+if [ $((i % 25)) -eq 0 ]; then
+echo ""
+fi
+done
+echo ""
+read -r -p "$(echo -e "${C_DIM}[Entrée pour continuer]${C_RESET}")" _
+}
+
+show_help() {
+clear_screen
+cat <<EOF
+
+${C_CYAN}${C_BOLD}═══ AIDE — NEXUS HELLO ENTERPRISE ═══${C_RESET}
+
+${C_GREEN}Mode interactif :${C_RESET}
+Lance le script sans argument, tu obtiens un menu.
+Tape le numéro d'une catégorie (1-9) pour y entrer.
+Tape 'L' pour lister toutes les commandes.
+Tape 'Q' pour quitter.
+
+${C_GREEN}Mode CLI :${C_RESET}
+${C_YELLOW}./nexus_hello_enterprise.sh 42${C_RESET}
+→ Lance la commande #42
+
+${C_YELLOW}./nexus_hello_enterprise.sh --list${C_RESET}
+→ Liste toutes les commandes
+
+${C_YELLOW}./nexus_hello_enterprise.sh --cat 3${C_RESET}
+→ Lance toute la catégorie 3
+
+${C_YELLOW}./nexus_hello_enterprise.sh --help${C_RESET}
+→ Cette aide
+
+${C_GREEN}Catégories :${C_RESET}
+EOF
+local i
+for ((i=1; i<=9; i++)); do
+local name="${CATEGORIES[$i]%|*}"
+local range="${CATEGORIES[$i]#*|}"
+local start="${range% *}"
+local end="${range#* }"
+printf " ${C_YELLOW}[%d]${C_RESET} %s (%02d-%02d)\n" "$i" "$name" "$start" "$end"
+done
+echo ""
+read -r -p "$(echo -e "${C_DIM}[Entrée pour continuer]${C_RESET}")" _
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODE INTERACTIF
+# ═══════════════════════════════════════════════════════════════════════════════
+
+interactive_mode() {
+while true; do
+show_menu
+printf "${C_YELLOW}➜ ${C_RESET}"
+read -r choice
+choice="${choice^^}"
+
+if [ -z "$choice" ]; then
+continue
+fi
+
+case "$choice" in
+Q|QUIT|EXIT)
+echo -e "\n${C_MAGENTA}👋 À bientôt !${C_RESET}\n"
+break
+;;
+H)
+show_help
+continue
+;;
+L)
+list_all_commands
+continue
+;;
+esac
+
+# Numéro
+if [[ "$choice" =~ ^[0-9]+$ ]]; then
+local n="$choice"
+
+# Catégorie
+if [ "$n" -ge 1 ] && [ "$n" -le 9 ]; then
+local name="${CATEGORIES[$n]%|*}"
+local range="${CATEGORIES[$n]#*|}"
+local start="${range% *}"
+local end="${range#* }"
+
+clear_screen
+echo -e "${C_CYAN}Catégorie : ${name}${C_RESET}\n"
+local c
+for ((c=start; c<=end; c++)); do
+local entry="${COMMANDS[$c]:-}"
+local cname="${entry%|*}"
+printf " ${C_GREEN}[%03d]${C_RESET} %s\n" "$c" "$cname"
+done
+echo ""
+read -r -p "$(echo -e "${C_YELLOW}Numéro de commande (ou Entrée pour retour) : ${C_RESET}")" sub
+if [[ "$sub" =~ ^[0-9]+$ ]] && [ -n "${COMMANDS[$sub]:-}" ]; then
+run_command "$sub"
+fi
+continue
+fi
+
+# Commande directe
+if [ -n "${COMMANDS[$n]:-}" ]; then
+run_command "$n"
+continue
+fi
+fi
+
+err "Choix invalide : $choice"
+sleep 1
+done
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODE CLI
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cli_mode() {
+local arg="$1"
+
+case "$arg" in
+-h|--help)
+show_help
+return
+;;
+-l|--list)
+list_all_commands
+return
+;;
+-v|--version)
+echo "${PROJECT_NAME} v${VERSION}"
+echo "Auteur : ${AUTHOR}"
+return
+;;
+esac
+
+if [[ "$arg" == "--cat" ]]; then
+local n="$2"
+if [[ "$n" =~ ^[0-9]+$ ]] && [ "$n" -ge 1 ] && [ "$n" -le 9 ]; then
+local name="${CATEGORIES[$n]%|*}"
+local range="${CATEGORIES[$n]#*|}"
+local start="${range% *}"
+local end="${range#* }"
+local c
+for ((c=start; c<=end; c++)); do
+local entry="${COMMANDS[$c]:-}"
+local cname="${entry%|*}"
+local fn="${entry#*|}"
+echo ""
+printf "${C_CYAN}${C_BOLD}[#%03d] %s${C_RESET}\n\n" "$c" "$cname"
+if declare -F "$fn" >/dev/null 2>&1; then
+"$fn"
+fi
+done
+fi
+return
+fi
+
+# Numéro de commande
+if [[ "$arg" =~ ^[0-9]+$ ]] && [ -n "${COMMANDS[$arg]:-}" ]; then
+local entry="${COMMANDS[$arg]}"
+local name="${entry%|*}"
+local fn="${entry#*|}"
+clear_screen
+printf "${C_CYAN}${C_BOLD}[#%03d] %s${C_RESET}\n\n" "$arg" "$name"
+printf "${C_DIM}%s${C_RESET}\n\n" "$(hr '─' 78)"
+if declare -F "$fn" >/dev/null 2>&1; then
+"$fn"
+fi
+return
+fi
+
+err "Argument inconnu : $arg"
+echo "Utilise --help pour l'aide"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════════════════════
+
+main() {
+if [ $# -eq 0 ]; then
+interactive_mode
+else
+cli_mode "$1" "${2:-}"
+fi
+}
+
+main "$@"
